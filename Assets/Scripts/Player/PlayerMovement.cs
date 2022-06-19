@@ -18,7 +18,8 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private int dashMaxCount;
     [SerializeField] private float dashForce;
     [SerializeField] private float dashTime;
-    [SerializeField, Range(0.0f,1.0f)] private float minimumDashTime;
+    
+    [SerializeField, Range(0,100)] private int percentageMinimumDashTime;
 
     private int curDash;
 
@@ -59,7 +60,7 @@ public class PlayerMovement : MonoBehaviour
         if(canMove)
         {
             if(!isDashing)
-                rb.velocity = moveVelocity;
+                rb.velocity = new Vector3(moveVelocity.x, rb.velocity.y, moveVelocity.z);
         }
     }
 
@@ -99,10 +100,15 @@ public class PlayerMovement : MonoBehaviour
         if(!canMove)
             return;
 
-        Vector3 moveDir = new Vector3(input.x,0f,input.y);
         Vector3 getInput = GetInput(true);
+        Vector3 moveVector = getInput * movementSpeed;
         
-        moveVelocity =  getInput * movementSpeed;
+        moveVelocity = moveVector;
+    }
+
+    public void RotateTo(Vector3 dir)
+    {
+        transform.LookAt(new Vector3(dir.x, transform.position.y, dir.z));
     }
 
     #endregion
@@ -128,7 +134,8 @@ public class PlayerMovement : MonoBehaviour
     {
         if(isDashing || curDash <= 0)
             return;
-    
+
+        PML.pEffects.ChangePlayerTrailActive(true);
         StartCoroutine(EDash());
     }
 
@@ -142,6 +149,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void StopDash()
     {
+        PML.pEffects.ChangePlayerTrailActive(false);
         isDashing = false;
         rb.velocity = Vector3.zero;
     }
@@ -160,7 +168,7 @@ public class PlayerMovement : MonoBehaviour
 
         while (Time.time < startTime + dashTime)
         {
-            if(dashReleased && (Time.time > startTime + (dashTime * minimumDashTime)))
+            if(dashReleased && (Time.time > startTime + (dashTime * (float)(percentageMinimumDashTime / 100f))))
             {
                 StopDash();
                 yield break;
@@ -168,7 +176,7 @@ public class PlayerMovement : MonoBehaviour
 
             yield return null;
         }
-
+        StopDash();
         isDashing = false;
     }
 

@@ -4,9 +4,8 @@ using UnityEngine;
 
 public interface IDamagable
 {
-    int maxHealth { get; set; }
-
     bool invulnerable { get; set; }
+    bool isDead { get; set; }
 
-    void TakeDamage(int dmg);
+    void TakeDamage(float dmg, out bool killed);
 } 
