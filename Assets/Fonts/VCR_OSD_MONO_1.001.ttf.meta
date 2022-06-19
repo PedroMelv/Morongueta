@@ -1,0 +1,23 @@
+fileFormatVersion: 2
+guid: 3c47cc2021318b34699cb93755d27f8c
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: VCR OSD Mono
+  fontNames:
+  - VCR OSD Mono
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: 24649b000b7f9194f83b5399dee8823d, type: 3}
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  useLegacyBoundsCalculation: 0
+  shouldRoundAdvanceValue: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

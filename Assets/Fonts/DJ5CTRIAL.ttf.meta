@@ -1,0 +1,23 @@
+fileFormatVersion: 2
+guid: acc702fc77064a544888f50b9994f562
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: dearJoe 5 CASUAL trial
+  fontNames:
+  - dearJoe 5 CASUAL trial
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: 89ac07fbe5f9ab848bb6db5ba5884c78, type: 3}
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  useLegacyBoundsCalculation: 0
+  shouldRoundAdvanceValue: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
