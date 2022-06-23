@@ -24,21 +24,7 @@ public class PlayerAttack : MonoBehaviour
 
     void Update()
     {
-        if(curWeapon == null)
-            return;
-        if(!canShoot)
-        {
-            if(fireRate <= 0f)
-            {
-                canShoot = true;
-                fireRate = (curWeapon as RangedWeapon).fireRate;
-            }else{
-                fireRate -= Time.deltaTime;
-            }
-        }
-
-        if(curWeapon is RangedWeapon)
-            TargetLine();
+        HandleWeapon();
     }
 
     public void HandleInput(Vector3 inputPos)
@@ -50,6 +36,27 @@ public class PlayerAttack : MonoBehaviour
         
         if(curWeapon is RangedWeapon)
             Shoot();
+    }
+
+    public void HandleWeapon()
+    {
+        if (curWeapon == null)
+            return;
+        if (!canShoot)
+        {
+            if (fireRate <= 0f)
+            {
+                canShoot = true;
+                fireRate = (curWeapon as RangedWeapon).fireRate;
+            }
+            else
+            {
+                fireRate -= Time.deltaTime;
+            }
+        }
+
+        if (curWeapon is RangedWeapon)
+            TargetLine();
     }
 
     private void Shoot()
