@@ -8,8 +8,21 @@ public class PlayerAttack : MonoBehaviour
     private Weapon curWeapon;
     [SerializeField]private int getID;
 
-    private bool canShoot;
+    private bool canAttack;
+
+    private bool combo = false;
+
+    private bool attacking;
+
+    
     private float fireRate;
+    private float cooldown;
+    private float perHitCooldown;
+    private float minHitCooldown;
+
+    private GameObject attackBox;
+
+    private int comboHit;
 
     private Vector3 input;
 
@@ -20,6 +33,13 @@ public class PlayerAttack : MonoBehaviour
     {
         PML = PlayerModuleLink.i;
         curWeapon = WeaponDataBase.i.GetWeaponByID(getID);
+
+        if (curWeapon is MeeleWeapon)
+        {
+            attackBox = Instantiate((curWeapon as MeeleWeapon).attackBoxes, transform);
+            perHitCooldown = (curWeapon as MeeleWeapon).totalCooldown;
+            minHitCooldown = perHitCooldown / 2f;
+        }
     }
 
     void Update()
@@ -27,37 +47,79 @@ public class PlayerAttack : MonoBehaviour
         HandleWeapon();
     }
 
+    #region Input Area
+
     public void HandleInput(Vector3 inputPos)
     {
         input = inputPos;
 
-        if(!canShoot)
-            return;
-        
-        if(curWeapon is RangedWeapon)
-            Shoot();
+        Attack();
+    }
+
+    public Weapon CurrentWeapon()
+    {
+        return curWeapon;
+    }
+
+    #endregion
+
+    public void Attack()
+    {
+        if (curWeapon is RangedWeapon)
+        {
+            if (canAttack)
+                Shoot();
+        }
+        else
+            Hit();
     }
 
     public void HandleWeapon()
     {
         if (curWeapon == null)
             return;
-        if (!canShoot)
+
+        if(curWeapon is MeeleWeapon)
         {
-            if (fireRate <= 0f)
+            if(comboHit >= (curWeapon as MeeleWeapon).maxComboHits)
             {
-                canShoot = true;
-                fireRate = (curWeapon as RangedWeapon).fireRate;
+                combo = false;
             }
-            else
+
+            if (!canAttack)
             {
-                fireRate -= Time.deltaTime;
+                if (cooldown <= 0f)
+                {
+                    canAttack = true;
+                    cooldown = (curWeapon as MeeleWeapon).totalCooldown;
+                }
+                else
+                {
+                    cooldown -= Time.deltaTime;
+                }
+            }
+        }
+        else
+        {
+            TargetLine();
+
+            if (!canAttack)
+            {
+                if (fireRate <= 0f)
+                {
+                    canAttack = true;
+                    fireRate = (curWeapon as RangedWeapon).fireRate;
+                }
+                else
+                {
+                    fireRate -= Time.deltaTime;
+                }
             }
         }
 
-        if (curWeapon is RangedWeapon)
-            TargetLine();
     }
+
+    #region RangedArea
 
     private void Shoot()
     {
@@ -73,7 +135,7 @@ public class PlayerAttack : MonoBehaviour
 
         createdBullet.transform.LookAt(new Vector3(input.x, pos.y, input.z));
 
-        canShoot = false;
+        canAttack = false;
     }
 
 
@@ -84,4 +146,42 @@ public class PlayerAttack : MonoBehaviour
 
         PML.pEffects.DrawTargetLine(startPos, endPos);
     }
+
+    #endregion
+
+
+    #region MeeleArea
+    public void Hit()
+    {
+        if (attacking)
+            return;
+        if(!canAttack)
+        {
+            if (combo)
+            {
+                comboHit++;
+                StartCoroutine(EMeeleAttack());
+            }
+                
+        }
+        else
+        {
+            comboHit = 1;
+            canAttack = false;
+            combo = true;
+            StartCoroutine(EMeeleAttack());
+        }
+        
+    }
+
+    public IEnumerator EMeeleAttack()
+    {
+        attacking = true;
+        attackBox.GetComponent<Damager>().Reset(curWeapon.damage);
+        attackBox.SetActive(true);
+        yield return new WaitForSeconds(.05f);
+        attackBox.SetActive(false);
+        attacking = false;
+    }
+    #endregion
 }

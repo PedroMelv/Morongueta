@@ -4,7 +4,10 @@ using UnityEngine;
 
 public class WeaponDataBase : MonoBehaviour
 {
-    [SerializeField]private RangedWeapon[] rangedWeapons;
+    [SerializeField] private RangedWeapon[] rangedWeapons;
+    [SerializeField] private MeeleWeapon[] meeleWeapons;
+
+    private List<Weapon> totalWeapons = new List<Weapon>();
 
     public static WeaponDataBase i;
     
@@ -22,24 +25,34 @@ public class WeaponDataBase : MonoBehaviour
 
         for (int i = 0; i < rangedWeapons.Length; i++)
         {
-            rangedWeapons[i].ID = i+1;
+            totalWeapons.Add(rangedWeapons[i]);
         }
+
+        for (int i = 0; i < meeleWeapons.Length; i++)
+        {
+            totalWeapons.Add(meeleWeapons[i]);
+        }
+
+        for (int i = 0; i < totalWeapons.Count; i++)
+        {
+            totalWeapons[i].ID = i + 1;
+        }
+
+
     }
 
     public Weapon GetWeaponByID(int ID)
     {
-        Weapon w = new RangedWeapon();
-
-        for (int i = 0; i < rangedWeapons.Length; i++)
+        for (int i = 0; i < totalWeapons.Count; i++)
         {
-            if(rangedWeapons[i].ID == ID)
+            if(totalWeapons[i].ID == ID)
             {
-                w = rangedWeapons[i];
+                return totalWeapons[i];
                 break;
             }
         }
 
-        return w;
+        return null;
     }
 
 }

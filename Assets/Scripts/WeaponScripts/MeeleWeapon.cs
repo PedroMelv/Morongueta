@@ -2,17 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MeeleWeapon : MonoBehaviour
+[System.Serializable]
+public class MeeleWeapon : Weapon
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    [Header("Attack things")]
+    public float totalCooldown;
+    public float perHitCooldown;
+    public int maxComboHits;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    public GameObject attackBoxes;
 }

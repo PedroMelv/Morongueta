@@ -18,9 +18,16 @@ public class PlayerInput : MonoBehaviour
         PML.pMove.SetInput(new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")));
         PML.pMove.RotateTo(GetMousePos(transform.position));
 
-        if(Input.GetMouseButton(0))PML.pAttack.HandleInput(GetMousePos(transform.position));
-        
-        if(Input.GetKeyDown(dashKey)) PML.pMove.ExecuteDash();
+        if(PML.pAttack.CurrentWeapon() is RangedWeapon) if (Input.GetMouseButton(0))     PML.pAttack.HandleInput(GetMousePos(transform.position));
+
+
+        if (PML.pAttack.CurrentWeapon() is MeeleWeapon) if (Input.GetMouseButtonDown(0)) PML.pAttack.HandleInput(GetMousePos(transform.position));
+
+
+
+        if (Input.GetKeyDown(dashKey)) PML.pMove.ExecuteDash();
+
+
         if(Input.GetKeyUp(dashKey)) PML.pMove.ReleaseDash();
     }
 

@@ -24,10 +24,10 @@ public enum ShootType
     HIGH_SHOOT
 }
 
-public class Bullet : MonoBehaviour
+public class Bullet : MonoBehaviour, IDamager
 {
     [SerializeField]private LayerMask hitLayer, groundLayer;
-    
+
     private BulletTypes    bulletType;
     private BulletSpecials bulletSpecial;
     private ShootType      shootType;
@@ -48,8 +48,9 @@ public class Bullet : MonoBehaviour
     private float amplitude = 10;
     private float frequency = 1;
     #endregion
+
     private float bulletSpeed, bulletRotationSpeed;
-    private float damage;
+    public float damage { get; set; }
 
     private float startTime;
 

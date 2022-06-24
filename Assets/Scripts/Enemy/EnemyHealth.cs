@@ -25,6 +25,7 @@ public class EnemyHealth : MonoBehaviour, IDamagable
         {
             killed = true;
             isDead = true;
+            Destroy(this.gameObject);
             return;
         }
     }
