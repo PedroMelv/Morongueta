@@ -1,15 +1,16 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &1
+--- !u!114 &11400000
 MonoBehaviour:
-  m_ObjectHideFlags: 61
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 247994e1f5a72c2419c26a37e9334c01, type: 3}
-  m_Name: 
+  m_Script: {fileID: 11500000, guid: 87d612f2f3c41104e9058b81cfd6786c, type: 3}
+  m_Name: profile2
   m_EditorClassIdentifier: 
-  m_LastMaterialVersion: 4
+  damageBoxSizes: {x: 0, y: 0, z: 0}
+  damageBoxOffset: {x: 0, y: 0, z: 0}
