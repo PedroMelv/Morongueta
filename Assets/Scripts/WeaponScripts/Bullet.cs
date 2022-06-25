@@ -113,9 +113,14 @@ public class Bullet : MonoBehaviour, IDamager
                 break;
             case BulletTypes.TARGET:
                 if(targetObj != null)
+                {
                     targeting = (Vector3.Distance(targetObj.transform.position, transform.position) < distanceToTarget);
+                }
+
                 if (targeting)
                 {
+                    if (targetObj == null)
+                        return;
                     Vector3 direction = (Vector3)targetObj.transform.position - rb.position;
                     direction.Normalize();
 

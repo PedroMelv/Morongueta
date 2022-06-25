@@ -11,6 +11,7 @@ public class PlayerMovement : MonoBehaviour
     private Vector3 moveVelocity;
 
     private bool canMove = true;
+    private bool canRotate = true;
     
     [Space]
     
@@ -108,11 +109,11 @@ public class PlayerMovement : MonoBehaviour
 
     public void RotateTo(Vector3 dir)
     {
-        transform.LookAt(new Vector3(dir.x, transform.position.y, dir.z));
+        if(canRotate)
+            transform.LookAt(new Vector3(dir.x, transform.position.y, dir.z));
     }
 
     #endregion
-
 
     #region Dash System
 
@@ -180,5 +181,27 @@ public class PlayerMovement : MonoBehaviour
         isDashing = false;
     }
 
+    #endregion
+
+
+    #region ControlArea
+
+    public void ControlComplete(bool active)
+    {
+        ControlMovement(active);
+        ControlRotation(active);
+
+    }
+    public void ControlMovement(bool active)
+    {
+        canMove = active;
+        rb.velocity = Vector3.zero;
+        
+    }
+
+    public void ControlRotation(bool active)
+    {
+        canRotate = active;
+    }
     #endregion
 }

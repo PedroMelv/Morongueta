@@ -48,7 +48,6 @@ public class WeaponDataBase : MonoBehaviour
             if(totalWeapons[i].ID == ID)
             {
                 return totalWeapons[i];
-                break;
             }
         }
 

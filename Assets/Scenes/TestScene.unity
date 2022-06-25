@@ -123,6 +123,12 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!4 &27713636 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 9062201544826196197, guid: fe4617a83a8fe944290c9b956d2d58f4,
+    type: 3}
+  m_PrefabInstance: {fileID: 1295761005}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &340765087
 GameObject:
   m_ObjectHideFlags: 0
@@ -461,6 +467,101 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+--- !u!1001 &1295761005
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 1834075131}
+    m_Modifications:
+    - target: {fileID: 5380675125273072902, guid: fe4617a83a8fe944290c9b956d2d58f4,
+        type: 3}
+      propertyPath: attackSize
+      value: 2.09
+      objectReference: {fileID: 0}
+    - target: {fileID: 5380675125273072902, guid: fe4617a83a8fe944290c9b956d2d58f4,
+        type: 3}
+      propertyPath: damagerProfile
+      value: 
+      objectReference: {fileID: 11400000, guid: 89725e18d02ee6d44bcb983c5edeaca6,
+        type: 2}
+    - target: {fileID: 5380675125273072902, guid: fe4617a83a8fe944290c9b956d2d58f4,
+        type: 3}
+      propertyPath: damageBoxSizes.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5380675125273072902, guid: fe4617a83a8fe944290c9b956d2d58f4,
+        type: 3}
+      propertyPath: damageBoxSizes.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5380675125273072902, guid: fe4617a83a8fe944290c9b956d2d58f4,
+        type: 3}
+      propertyPath: damageBoxSizes.z
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9062201544826196122, guid: fe4617a83a8fe944290c9b956d2d58f4,
+        type: 3}
+      propertyPath: m_Name
+      value: AttackBoxes
+      objectReference: {fileID: 0}
+    - target: {fileID: 9062201544826196197, guid: fe4617a83a8fe944290c9b956d2d58f4,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 9062201544826196197, guid: fe4617a83a8fe944290c9b956d2d58f4,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9062201544826196197, guid: fe4617a83a8fe944290c9b956d2d58f4,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9062201544826196197, guid: fe4617a83a8fe944290c9b956d2d58f4,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9062201544826196197, guid: fe4617a83a8fe944290c9b956d2d58f4,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9062201544826196197, guid: fe4617a83a8fe944290c9b956d2d58f4,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9062201544826196197, guid: fe4617a83a8fe944290c9b956d2d58f4,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9062201544826196197, guid: fe4617a83a8fe944290c9b956d2d58f4,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9062201544826196197, guid: fe4617a83a8fe944290c9b956d2d58f4,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9062201544826196197, guid: fe4617a83a8fe944290c9b956d2d58f4,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9062201544826196197, guid: fe4617a83a8fe944290c9b956d2d58f4,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: fe4617a83a8fe944290c9b956d2d58f4, type: 3}
 --- !u!1 &1300774191
 GameObject:
   m_ObjectHideFlags: 0
@@ -918,7 +1019,9 @@ MonoBehaviour:
   rangedWeapons:
   - name: Arco
     ID: 0
+    attackType: 2
     damage: 5
+    chargeMax: 10
     fireRate: 0.25
     bulletSpeed: 15
     destroyBulletTime: 10
@@ -935,10 +1038,14 @@ MonoBehaviour:
   meeleWeapons:
   - name: Tacape
     ID: 0
+    attackType: 0
     damage: 10
-    totalCooldown: 2
+    chargeMax: 0
+    totalCooldown: 1
     perHitCooldown: 0.15
+    attackDuration: 0.15
     maxComboHits: 3
+    meeleType: 1
     attackBoxes: {fileID: 9062201544826196122, guid: fe4617a83a8fe944290c9b956d2d58f4,
       type: 3}
 --- !u!4 &1593827815
@@ -1040,6 +1147,7 @@ Transform:
   m_Children:
   - {fileID: 1564460642}
   - {fileID: 1511705417}
+  - {fileID: 27713636}
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

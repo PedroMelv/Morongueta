@@ -13,12 +13,14 @@ public class PlayerAttack : MonoBehaviour
     private bool combo = false;
 
     private bool attacking;
+    private bool lastAttacking;
 
     
     private float fireRate;
     private float cooldown;
     private float perHitCooldown;
-    private float minHitCooldown;
+
+    private float curCharge;
 
     private GameObject attackBox;
 
@@ -38,7 +40,6 @@ public class PlayerAttack : MonoBehaviour
         {
             attackBox = Instantiate((curWeapon as MeeleWeapon).attackBoxes, transform);
             perHitCooldown = (curWeapon as MeeleWeapon).totalCooldown;
-            minHitCooldown = perHitCooldown / 2f;
         }
     }
 
@@ -49,8 +50,18 @@ public class PlayerAttack : MonoBehaviour
 
     #region Input Area
 
-    public void HandleInput(Vector3 inputPos)
+    public void HandleInput(Vector3 inputPos, bool releasing = false)
     {
+        if(curWeapon == null)
+        {
+            return;
+        }
+
+        if(releasing)
+        {
+            ReleaseCharge();
+        }
+
         input = inputPos;
 
         Attack();
@@ -86,6 +97,8 @@ public class PlayerAttack : MonoBehaviour
                 combo = false;
             }
 
+            HandleAttackType();
+
             if (!canAttack)
             {
                 if (cooldown <= 0f)
@@ -94,9 +107,7 @@ public class PlayerAttack : MonoBehaviour
                     cooldown = (curWeapon as MeeleWeapon).totalCooldown;
                 }
                 else
-                {
                     cooldown -= Time.deltaTime;
-                }
             }
         }
         else
@@ -111,17 +122,63 @@ public class PlayerAttack : MonoBehaviour
                     fireRate = (curWeapon as RangedWeapon).fireRate;
                 }
                 else
-                {
                     fireRate -= Time.deltaTime;
-                }
             }
         }
 
     }
 
+    #region ChargeArea
+    private void ReleaseCharge()
+    {
+        float minCharge = curCharge / 4f;
+        float medCharge = curCharge / 2f;
+        float maxCharge = curCharge / 1.2f;
+
+        if (curCharge < minCharge)
+            CommonShoot(1f);
+        else if (curCharge >= minCharge && curCharge < medCharge)
+            CommonShoot(1.5f);
+        else if(curCharge >= medCharge && curCharge < maxCharge)
+            CommonShoot(2f);
+        else if(curCharge > maxCharge)
+            CommonShoot(2.5f);
+
+        curCharge = 0f;
+
+    }
+
+    #endregion
+
     #region RangedArea
 
     private void Shoot()
+    {
+        switch (curWeapon.attackType)
+        {
+            case AttackType.CLICK:
+                break;
+            case AttackType.HOLD:
+                CommonShoot();
+                break;
+            case AttackType.CHARGE:
+                ChargeShoot();
+                break;
+        }
+        
+    }
+
+    private void ChargeShoot()
+    {
+        float maxCharge = curWeapon.chargeMax;
+        if(curCharge <= maxCharge)
+        {
+            curCharge += Time.deltaTime * 10f;
+        }
+    }
+
+
+    private void CommonShoot(float bulletDamageMultiplier = 1f)
     {
         RangedWeapon RW = (curWeapon as RangedWeapon);
         //Debug.Log(RW.name);
@@ -131,7 +188,7 @@ public class PlayerAttack : MonoBehaviour
 
         GameObject createdBullet = Instantiate(bullet, pos, Quaternion.identity);
 
-        createdBullet.GetComponent<Bullet>().Create(RW.bulletSpeed, RW.bulletRotationSpeed, RW.damage, RW.bounceTimes, RW.bounceForce, RW.distanceToTarget, RW.destroyBulletTime, RW.amplitude, RW.frequency, RW.bulletType);
+        createdBullet.GetComponent<Bullet>().Create(RW.bulletSpeed, RW.bulletRotationSpeed, RW.damage * bulletDamageMultiplier, RW.bounceTimes, RW.bounceForce, RW.distanceToTarget, RW.destroyBulletTime, RW.amplitude, RW.frequency, RW.bulletType);
 
         createdBullet.transform.LookAt(new Vector3(input.x, pos.y, input.z));
 
@@ -174,12 +231,29 @@ public class PlayerAttack : MonoBehaviour
         
     }
 
+    public void HandleAttackType()
+    {
+        switch ((curWeapon as MeeleWeapon).meeleType)
+        {
+            case AttackMeeleType.NONE:
+                break;
+            case AttackMeeleType.STOP_MOTION:
+                if (lastAttacking != attacking)
+                {
+                    PML.pMove.ControlRotation(!attacking);
+                    lastAttacking = attacking;
+                }
+
+                break;
+        }
+    }
+
     public IEnumerator EMeeleAttack()
     {
         attacking = true;
         attackBox.GetComponent<Damager>().Reset(curWeapon.damage);
         attackBox.SetActive(true);
-        yield return new WaitForSeconds(.05f);
+        yield return new WaitForSeconds((curWeapon as MeeleWeapon).attackDuration);
         attackBox.SetActive(false);
         attacking = false;
     }

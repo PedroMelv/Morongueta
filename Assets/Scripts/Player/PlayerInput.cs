@@ -18,10 +18,14 @@ public class PlayerInput : MonoBehaviour
         PML.pMove.SetInput(new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")));
         PML.pMove.RotateTo(GetMousePos(transform.position));
 
-        if(PML.pAttack.CurrentWeapon() is RangedWeapon) if (Input.GetMouseButton(0))     PML.pAttack.HandleInput(GetMousePos(transform.position));
+
+        if(PML.pAttack.CurrentWeapon().attackType == AttackType.HOLD || PML.pAttack.CurrentWeapon().attackType == AttackType.CHARGE) if(Input.GetMouseButton(0)) PML.pAttack.HandleInput(GetMousePos(transform.position));
 
 
-        if (PML.pAttack.CurrentWeapon() is MeeleWeapon) if (Input.GetMouseButtonDown(0)) PML.pAttack.HandleInput(GetMousePos(transform.position));
+        if(PML.pAttack.CurrentWeapon().attackType == AttackType.CLICK) if(Input.GetMouseButtonDown(0))  PML.pAttack.HandleInput(GetMousePos(transform.position));
+
+
+        if(PML.pAttack.CurrentWeapon().attackType == AttackType.CHARGE)if(Input.GetMouseButtonUp(0))  PML.pAttack.HandleInput(GetMousePos(transform.position), true);
 
 
 
