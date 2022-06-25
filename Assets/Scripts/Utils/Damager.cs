@@ -13,6 +13,12 @@ public class Damager : MonoBehaviour, IDamager
 
     private bool hitted;
 
+    void Start()
+    {
+        transform.position += damagerProfile.damageBoxOffset;
+        gameObject.SetActive(false);
+    }
+
     void Update()
     {
         if(!hitted)
@@ -27,7 +33,8 @@ public class Damager : MonoBehaviour, IDamager
 
     private void CheckHit()
     {
-        Physics.BoxCast(transform.position + damagerProfile.damageBoxOffset, damagerProfile.damageBoxSizes / 2f, transform.forward, out RaycastHit hit, transform.rotation, attackSize, hitLayer);
+        Physics.SphereCast(transform.position, attackSize/2, transform.forward, out RaycastHit hit, attackSize, hitLayer);
+
         if (hit.collider != null)
         {
             IDamagable d = hit.collider.gameObject.GetComponent<IDamagable>();
@@ -50,7 +57,7 @@ public class Damager : MonoBehaviour, IDamager
     {
         if (damagerProfile == null) return;
         Gizmos.color = Color.red;
-        Gizmos.DrawWireCube(transform.position + damagerProfile.damageBoxOffset + transform.forward, damagerProfile.damageBoxSizes * attackSize);
+        Gizmos.DrawWireSphere(transform.position + transform.forward, attackSize/2);
     }
 
     public bool HasProfile()

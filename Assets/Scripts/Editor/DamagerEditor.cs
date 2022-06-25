@@ -24,10 +24,10 @@ public class DamagerEditor : Editor
 
             if (EditorGUI.EndChangeCheck())
             {
-                Undo.RecordObject(target, "Size and offset Change");
+                Undo.RecordObject(d.GetProfile(), "Size and offset Change");
                 d.EditProfile(size, offset);
 
-                EditorUtility.SetDirty(target);
+                EditorUtility.SetDirty(d.GetProfile());
             }
         }
 
